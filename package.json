@@ -1,0 +1,21 @@
+{
+  "name": "sofifa-web-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "full": "node main.js full",
+    "test": "node main.js test",
+    "download-urls": "node main.js download-urls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/prashantghimire/sofifa-web-scraper.git"
+  },
+  "private": true,
+  "dependencies": {
+    "cheerio": "^1.1.0",
+    "date-format": "^4.0.14",
+    "puppeteer": "^24.11.2"
+  }
+}
