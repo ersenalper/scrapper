@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "postinstall": "npx puppeteer browsers install chrome",
+    "postinstall": "npx puppeteer browsers install chrome@stable",
     "full": "node main.js full",
     "test": "node main.js test",
     "download-urls": "node main.js download-urls"
