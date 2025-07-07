@@ -1,5 +1,4 @@
 const fs = require('fs');
-process.env.PUPPETEER_EXECUTABLE_PATH = '/opt/render/.cache/puppeteer/chrome/linux-138.0.7204.92/chrome-linux64/chrome';
 const {getPlayerDetailsCsvRow} = require('./services/parser');
 const {loadPlayerUrlsFile} = require('./services/player-urls-loader');
 const assert = require('assert');
