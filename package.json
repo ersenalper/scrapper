@@ -4,7 +4,6 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "postinstall": "npx puppeteer browsers install chrome@stable",
     "full": "node main.js full",
     "test": "node main.js test",
     "download-urls": "node main.js download-urls"
@@ -17,6 +16,6 @@
   "dependencies": {
     "cheerio": "^1.1.0",
     "date-format": "^4.0.14",
-    "puppeteer": "^24.11.2"
+    "puppeteer-core": "^24.11.2"
   }
 }

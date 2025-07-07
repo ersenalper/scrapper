@@ -1,6 +1,10 @@
-const puppeteer = require('puppeteer');
-
+const puppeteer = require('puppeteer-core');
 const asyncWait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * Chrome path (Render üzerinde genellikle bu çalışır)
+ */
+const CHROME_EXECUTABLE_PATH = '/usr/bin/google-chrome';
 
 /**
  * This method will read the content of any webpage using Puppeteer.
@@ -10,21 +14,30 @@ const asyncWait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const getPageContent = async (url) => {
     let attempts = 5;
     let lastError = null;
+
     while (attempts > 0) {
         try {
-            const browser = await puppeteer.launch({ headless: "new" });
+            const browser = await puppeteer.launch({
+                headless: true,
+                executablePath: CHROME_EXECUTABLE_PATH,
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+
             const page = await browser.newPage();
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
             await page.setExtraHTTPHeaders({
                 'Accept-Language': 'tr-TR,tr;q=0.9',
                 'Referer': 'https://sofifa.com/'
             });
+
             await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
             const content = await page.content();
             await browser.close();
+
             if (attempts < 5) {
                 console.log(`retry successful ... attempt=${attempts}`);
             }
+
             return content;
         } catch (err) {
             lastError = err;
@@ -33,6 +46,7 @@ const getPageContent = async (url) => {
             attempts -= 1;
         }
     }
+
     throw new Error(`Error reading page=${url}, lastError=${lastError && lastError.message}`);
 };
 
