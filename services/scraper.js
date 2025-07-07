@@ -10,7 +10,9 @@ const getPageContent = async (url) => {
         try {
             const browser = await puppeteer.launch({
                 headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+                // 👇 BUNU EKLEME: executablePath VERME!
+                // executablePath: '/usr/bin/google-chrome' gibi bir şey varsa kaldır!
             });
 
             const page = await browser.newPage();
