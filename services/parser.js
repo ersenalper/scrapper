@@ -72,7 +72,6 @@ function formatDate(dateStr) {
 
 async function getPlayerDetailsCsvRow(url) {
     url += url.includes('?') ? '&hl=tr-TR&r=250040&set=true' : '?hl=tr-TR&r=250040&set=true';
-console.log(url)
 
     const html = await getPageContent(url);
     const player_id = url.split('/')[4];
