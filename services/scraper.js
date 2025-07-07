@@ -1,13 +1,19 @@
 const puppeteer = require('puppeteer');
+const path = require('path');
 
 const asyncWait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
- * Bu fonksiyon, Puppeteer kullanarak verilen URL'deki sayfa içeriğini çeker.
- * @param {string} url - Sayfanın URL'si
- * @returns {Promise<string>} - Sayfa HTML içeriği
+ * Bu method bir URL'den HTML içeriği çekmek için Puppeteer kullanır.
+ * @param {string} url - Hedef URL
+ * @returns {Promise<string>} Sayfa HTML içeriği
  */
 const getPageContent = async (url) => {
+    const executablePath = path.resolve(
+        __dirname,
+        '../../.cache/puppeteer/chrome/linux-138.0.7204.92/chrome-linux64/chrome'
+    );
+
     let attempts = 5;
     let lastError = null;
 
@@ -15,13 +21,13 @@ const getPageContent = async (url) => {
         try {
             const browser = await puppeteer.launch({
                 headless: true,
+                executablePath,
                 args: ['--no-sandbox', '--disable-setuid-sandbox']
             });
 
             const page = await browser.newPage();
 
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
-
             await page.setExtraHTTPHeaders({
                 'Accept-Language': 'tr-TR,tr;q=0.9',
                 'Referer': 'https://sofifa.com/'
@@ -30,7 +36,6 @@ const getPageContent = async (url) => {
             await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
 
             const content = await page.content();
-
             await browser.close();
 
             if (attempts < 5) {
