@@ -1,15 +1,11 @@
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
+
 const asyncWait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
- * Chrome path (Render üzerinde genellikle bu çalışır)
- */
-const CHROME_EXECUTABLE_PATH = '/usr/bin/google-chrome';
-
-/**
- * This method will read the content of any webpage using Puppeteer.
- * @param url
- * @returns {Promise<String>}
+ * Bu fonksiyon, Puppeteer kullanarak verilen URL'deki sayfa içeriğini çeker.
+ * @param {string} url - Sayfanın URL'si
+ * @returns {Promise<string>} - Sayfa HTML içeriği
  */
 const getPageContent = async (url) => {
     let attempts = 5;
@@ -19,19 +15,22 @@ const getPageContent = async (url) => {
         try {
             const browser = await puppeteer.launch({
                 headless: true,
-                executablePath: CHROME_EXECUTABLE_PATH,
                 args: ['--no-sandbox', '--disable-setuid-sandbox']
             });
 
             const page = await browser.newPage();
+
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36');
+
             await page.setExtraHTTPHeaders({
                 'Accept-Language': 'tr-TR,tr;q=0.9',
                 'Referer': 'https://sofifa.com/'
             });
 
             await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+
             const content = await page.content();
+
             await browser.close();
 
             if (attempts < 5) {
